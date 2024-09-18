@@ -47,7 +47,7 @@ public class OptimizarController {
 
             // Crear el mapa para la respuesta
             Map<String, Object> response = new HashMap<>();
-            response.put("data", "se fue se fue");
+            response.put("data", "se fue se fue se fue");
             response.put("valid", true);
 
             // Devolver el objeto ResponseEntity con el cuerpo y el código HTTP 200

@@ -335,8 +335,8 @@ public class Route implements AutoCloseable {
    @Override
    public void close() {
         this.Sequence = null;
-        this.VisitTimes = null;
         if(this.VisitTimes != null)
             this.VisitTimes.clear();
+        this.VisitTimes = null;
    }
 }

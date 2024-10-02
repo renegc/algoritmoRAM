@@ -31,7 +31,7 @@ public class OptimizarController {
             System.out.println("Vehiculo: " + vehiculo);
             System.out.println("Orders: " + orders);
 
-            InputData data = new InputData(35);
+            InputData data = new InputData(5);
             System.out.println(data);
 
             MetaHeuristic algorithm = new GeneticAlgorithm(data);

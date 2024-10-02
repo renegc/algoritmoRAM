@@ -4,6 +4,7 @@
  */
 package com.ram.optimization.Google;
 
+import com.google.cloud.storage.Blob;
 import com.google.cloud.storage.Storage;
 import com.google.cloud.storage.StorageOptions;
 import com.google.cloud.storage.Bucket;
@@ -14,6 +15,7 @@ public class GoogleCloudStorageService {
     private String bucketName;
 
     public GoogleCloudStorageService(String projectId, String bucketName) {
+        
         this.storage = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
         this.bucketName = bucketName;
     }
@@ -22,5 +24,7 @@ public class GoogleCloudStorageService {
         return storage.get(bucketName);
     }
 
-   
+     public Blob getFile(String fileName) {
+        return storage.get(bucketName, fileName);
+    }
 }

@@ -1,6 +1,8 @@
 package com.ram.optimization.LogicAlgoritmo.Data;
 
 
+import com.google.cloud.storage.Bucket;
+import com.ram.optimization.Google.GoogleCloudStorageService;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -49,6 +51,19 @@ public class InputData implements AutoCloseable {
     public InputData(int max_stops) {
         this.Orders = new HashMap<>(max_stops, 1f);
         try {
+             // Aquí leemos el objeto que viene en el cuerpo de la petición
+            String projectId = "routesandmaps";
+            String bucketName = "routesandmaps-files";
+
+            GoogleCloudStorageService gcsService = new GoogleCloudStorageService(projectId, bucketName);
+            Bucket bucket = gcsService.getBucket();
+
+            if (bucket != null) {
+                System.out.println("Conectado al bucket: " + bucket.getName());
+            } else {
+                System.out.println("El bucket no fue encontrado.");
+            }
+            
             StringTokenizer st;
             // Read vehicles data from file
             File trucksFile = new File("Instances\\Vehicles.csv");

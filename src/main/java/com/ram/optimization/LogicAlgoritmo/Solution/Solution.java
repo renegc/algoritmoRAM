@@ -2,6 +2,7 @@ package com.ram.optimization.LogicAlgoritmo.Solution;
 
 
 import com.ram.optimization.LogicAlgoritmo.Data.InputData;
+import java.io.File;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.stream.IntStream;
@@ -138,8 +139,8 @@ public class Solution implements AutoCloseable{
         return this.AuxiliaryGraph.getGiantTour();
     }
 
-    public void toCSV(InputData data) {
-        this.AuxiliaryGraph.toCSV(data);
+    public File toCSV(InputData data) {
+       return   this.AuxiliaryGraph.toCSV(data);
     }
 
     @Override

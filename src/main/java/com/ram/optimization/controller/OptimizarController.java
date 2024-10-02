@@ -4,11 +4,13 @@
  */
 package com.ram.optimization.controller;
 
+import com.ram.optimization.Google.GoogleCloudStorageService;
 import com.ram.optimization.LogicAlgoritmo.Data.InputData;
 import com.ram.optimization.LogicAlgoritmo.Metaheuristics.GeneticAlgorithm;
 import com.ram.optimization.LogicAlgoritmo.Metaheuristics.MetaHeuristic;
 import com.ram.optimization.LogicAlgoritmo.Solution.Solution;
 import com.ram.optimization.models.Urls;
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.http.HttpStatus;
@@ -30,26 +32,45 @@ public class OptimizarController {
             String msg = "No es posible generar la solucion";
             System.out.println("Vehiculo: " + vehiculo);
             System.out.println("Orders: " + orders);
-
+            Map<String, Object> auxResponse = new HashMap<>();
             InputData data = new InputData(35);
             System.out.println(data);
-            
+
             MetaHeuristic algorithm = new GeneticAlgorithm(data);
             algorithm.Run();
 
             if (algorithm.isFeasible()) {
                 Solution sol = algorithm.getBestSolution();
                 System.out.println(sol);
-                sol.toCSV(data);
-                sol.close();
+                //sol.toCSV(data);
+                //sol.close();
                 msg = "Solucion Completa";
+                File csvFile = sol.toCSV(data); // Asegúrate de que `toCSV` devuelve un `File` ahora.
+                sol.close();
+
+                String projectId = "routesandmaps";
+                String bucketName = "routesandmaps-files";
+                String destinationBlobName = csvFile.getName(); // Utiliza el nombre del archivo para el blob.
+
+                GoogleCloudStorageService gcsService = new GoogleCloudStorageService(projectId, bucketName);
+
+                try {
+                    // Subir el archivo al bucket
+                    gcsService.uploadFile(csvFile.getPath(), destinationBlobName);
+                    msg = "Solución completa. Archivo subido exitosamente: ";
+                    auxResponse.put("nameFile", destinationBlobName);
+                } catch (Exception e) {
+                    msg = "Solución completa, pero ocurrió un error al subir el archivo: " + e.getMessage();
+                    e.printStackTrace();
+                }
             }
             data.close();
 
             // Crear el mapa para la respuesta
             Map<String, Object> response = new HashMap<>();
-            response.put("data", msg);
+            response.put("msg", msg);
             response.put("valid", true);
+            response.put("data", auxResponse);
 
             // Devolver el objeto ResponseEntity con el cuerpo y el código HTTP 200
             return new ResponseEntity<>(response, HttpStatus.OK);

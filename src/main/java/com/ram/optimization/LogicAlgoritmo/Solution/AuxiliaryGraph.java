@@ -7,6 +7,7 @@ import com.ram.optimization.LogicAlgoritmo.Data.Vehicle;
 import com.ram.optimization.LogicAlgoritmo.Data.Order;
 import com.ram.optimization.LogicAlgoritmo.Data.VisitTime;
 import com.ram.optimization.LogicAlgoritmo.Solution.LSM.LocalSearchMotion;
+import java.io.File;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -295,8 +296,8 @@ public class AuxiliaryGraph implements AutoCloseable{
         return this.getLastNode().toString(this.Data);
     }
 
-    void toCSV(InputData data) {
-        this.getLastNode().toCSV(data);
+    File toCSV(InputData data) {
+        return this.getLastNode().toCSV(data);
     }
 
     @Override

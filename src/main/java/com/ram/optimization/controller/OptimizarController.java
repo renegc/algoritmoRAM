@@ -27,13 +27,13 @@ public class OptimizarController {
             // Aquí leemos el objeto que viene en el cuerpo de la petición
             String vehiculo = request.getVehiculo();
             String orders = request.getOrders();
-
+            String msg = "No es posible generar la solucion";
             System.out.println("Vehiculo: " + vehiculo);
             System.out.println("Orders: " + orders);
 
-            InputData data = new InputData(5);
+            InputData data = new InputData(35);
             System.out.println(data);
-
+            
             MetaHeuristic algorithm = new GeneticAlgorithm(data);
             algorithm.Run();
 
@@ -42,12 +42,13 @@ public class OptimizarController {
                 System.out.println(sol);
                 sol.toCSV(data);
                 sol.close();
+                msg = "Solucion Completa";
             }
             data.close();
 
             // Crear el mapa para la respuesta
             Map<String, Object> response = new HashMap<>();
-            response.put("data", "se fue se fue se fue");
+            response.put("data", msg);
             response.put("valid", true);
 
             // Devolver el objeto ResponseEntity con el cuerpo y el código HTTP 200

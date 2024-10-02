@@ -84,9 +84,12 @@ public class InputData implements AutoCloseable {
                 String line = bufferedReader.readLine(); // Saltar la primera línea
                 int vehicle_id = 0;
                 while ((line = bufferedReader.readLine()) != null) {
-                    st = new StringTokenizer(line, ",");
+                    if (!line.matches(",+")) {
+                         st = new StringTokenizer(line, ",");
                     this.Vehicles.put(vehicle_id, new Vehicle(vehicle_id, st));
-                    vehicle_id++;
+                    vehicle_id++; 
+                    }
+                  
                 }
             } catch (IOException e) {
                 System.out.println("Error al leer el archivo Vehicles.csv: " + e.getMessage());

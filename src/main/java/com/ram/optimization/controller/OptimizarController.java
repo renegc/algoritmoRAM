@@ -33,7 +33,7 @@ public class OptimizarController {
             System.out.println("Vehiculo: " + vehiculo);
             System.out.println("Orders: " + orders);
             Map<String, Object> auxResponse = new HashMap<>();
-            InputData data = new InputData(35);
+            InputData data = new InputData(35, vehiculo, orders);
             System.out.println(data);
 
             MetaHeuristic algorithm = new GeneticAlgorithm(data);

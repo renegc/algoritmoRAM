@@ -54,7 +54,7 @@ public class InputData implements AutoCloseable {
      * Constructs an InputData object and initializes it with data from the
      * input files.
      */
-    public InputData(int max_stops) throws IOException {
+    public InputData(int max_stops, String vehiculo, String orders) throws IOException {
         this.Orders = new HashMap<>(max_stops, 1f);
         try {
             // Aquí leemos el objeto que viene en el cuerpo de la petición
@@ -72,10 +72,10 @@ public class InputData implements AutoCloseable {
 
             StringTokenizer st;
             // Read vehicles data from file
-            // Leer datos de vehículos desde Google Cloud Storage
-            Blob vehiclesFileBlob = gcsService.getFile("Vehicles.csv-1726779117273.csv");
+            // Leer datos de vehículos desde Google Cloud Storage "Vehicles.csv-1726779117273.csv"
+            Blob vehiclesFileBlob = gcsService.getFile(vehiculo);
             if (vehiclesFileBlob == null) {
-                System.out.println("Vehicles.csv-1726779117273.csv no fue encontrado en el bucket.");
+                System.out.println(vehiculo + " no fue encontrado en el bucket.");
                 return;
             }
 
@@ -85,11 +85,11 @@ public class InputData implements AutoCloseable {
                 int vehicle_id = 0;
                 while ((line = bufferedReader.readLine()) != null) {
                     if (!line.matches(",+")) {
-                         st = new StringTokenizer(line, ",");
-                    this.Vehicles.put(vehicle_id, new Vehicle(vehicle_id, st));
-                    vehicle_id++; 
+                        st = new StringTokenizer(line, ",");
+                        this.Vehicles.put(vehicle_id, new Vehicle(vehicle_id, st));
+                        vehicle_id++;
                     }
-                  
+
                 }
             } catch (IOException e) {
                 System.out.println("Error al leer el archivo Vehicles.csv: " + e.getMessage());
@@ -99,9 +99,9 @@ public class InputData implements AutoCloseable {
             this.VehiclesCount = this.Vehicles.size();
 
             // Leer datos de órdenes desde Google Cloud Storage
-            Blob ordersFileBlob = gcsService.getFile("Orders.csv-1726779054669.csv");
+            Blob ordersFileBlob = gcsService.getFile(orders);
             if (ordersFileBlob == null) {
-                System.out.println("Orders.csv-1726779054669.csv no fue encontrado en el bucket.");
+                System.out.println(orders + "no fue encontrado en el bucket.");
                 return;
             }
 

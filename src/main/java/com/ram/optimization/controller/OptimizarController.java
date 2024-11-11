@@ -62,6 +62,10 @@ public class OptimizarController {
                 } catch (Exception e) {
                     msg = "Solución completa, pero ocurrió un error al subir el archivo: " + e.getMessage();
                     e.printStackTrace();
+                    Map<String, Object> response = new HashMap<>();
+
+                    response.put("valid", false);
+                    return new ResponseEntity<>(response, HttpStatus.OK);
                 }
             }
             data.close();
